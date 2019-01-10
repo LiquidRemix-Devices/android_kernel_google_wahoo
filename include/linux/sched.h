@@ -2039,6 +2039,9 @@ struct task_struct {
 	int pagefault_disabled;
 	atomic64_t *concurrent_active_time;
 	atomic64_t *concurrent_policy_time;
+#ifdef CONFIG_ANDROID_SIMPLE_LMK
+	bool lmk_sigkill_sent;
+#endif
 /* CPU-specific state of this task */
 	struct thread_struct thread;
 /*
@@ -2894,6 +2897,7 @@ static inline void set_task_comm(struct task_struct *tsk, const char *from)
 {
 	__set_task_comm(tsk, from, false);
 }
+
 extern char *__get_task_comm(char *to, size_t len, struct task_struct *tsk);
 #define get_task_comm(buf, tsk) ({			\
 	BUILD_BUG_ON(sizeof(buf) != TASK_COMM_LEN);	\
